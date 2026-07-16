@@ -7,7 +7,8 @@ MVP RAG pour l'Institut Superieur d'Informatique: upload PDF, extraction texte, 
 - API FastAPI documentee avec Swagger: `http://localhost:8000/docs`
 - Upload d'un ou plusieurs PDF
 - Extraction et decoupage du texte
-- Embeddings locaux avec SentenceTransformers
+- Embeddings rapides locaux par hashing, sans telechargement au premier appel
+- SentenceTransformers activable en option pour une meilleure recherche semantique
 - Stockage vectoriel PostgreSQL + PgVector
 - Recherche semantique des passages pertinents
 - Generation de reponse via GroqCloud
@@ -43,7 +44,7 @@ pip install -e ".[dev]"
 cp .env.example .env
 docker compose up -d postgres
 python3 -m alembic upgrade head
-python3 -m uvicorn app.main:app --reload
+python3 -m uvicorn app.main:app --reload --reload-dir app
 ```
 
 Dans un second terminal:
@@ -75,9 +76,39 @@ make lint
 make test
 ```
 
+## Performance
+
+Le mode par defaut est optimise pour le developpement local:
+
+```env
+EMBEDDING_PROVIDER=hashing
+```
+
+Ce mode ne telecharge aucun modele HuggingFace et evite le chargement de Torch pendant une requete. L'upload PDF repond rapidement avec un statut `processing`; l'indexation continue ensuite en arriere-plan.
+
+Pour une meilleure qualite semantique avec SentenceTransformers:
+
+```bash
+python3 -m pip install -e ".[dev,ml]"
+```
+
+Puis dans `.env`:
+
+```env
+EMBEDDING_PROVIDER=sentence_transformers
+EMBEDDING_PRELOAD_ON_STARTUP=true
+```
+
+Le prechargement de modele peut aussi etre fait explicitement:
+
+```bash
+python3 -m scripts.preload_models
+```
+
 ## Notes techniques
 
-- Le modele d'embedding par defaut est `sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2` avec 384 dimensions.
+- Le provider d'embedding par defaut est `hashing` avec 384 dimensions.
+- Le modele SentenceTransformers optionnel est `sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2`.
 - Le modele Groq par defaut est `openai/gpt-oss-20b`.
 - Streamlit consomme uniquement l'API FastAPI.
 - Les PDF ne sont pas stockes bruts en V1; seuls les chunks, metadonnees et embeddings sont conserves.

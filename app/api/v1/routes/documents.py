@@ -1,19 +1,20 @@
 import uuid
 
-from fastapi import APIRouter, Depends, File, HTTPException, UploadFile, status
+from fastapi import APIRouter, BackgroundTasks, Depends, File, HTTPException, UploadFile, status
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.core.exceptions import AppError, bad_request
 from app.db.repositories import DocumentRepository
 from app.db.session import get_session
 from app.schemas.document import DocumentOut, DocumentUploadResponse, UploadedDocument
-from app.workers.ingestion import DocumentIngestionService
+from app.workers.ingestion import DocumentIngestionService, ingest_document_in_background
 
 router = APIRouter()
 
 
 @router.post("/upload", response_model=DocumentUploadResponse)
 async def upload_documents(
+    background_tasks: BackgroundTasks,
     files: list[UploadFile] = File(...),
     session: AsyncSession = Depends(get_session),
 ) -> DocumentUploadResponse:
@@ -27,7 +28,7 @@ async def upload_documents(
 
     try:
         for file in files:
-            result = await service.ingest_upload(file)
+            result, content = await service.register_upload(file)
             uploaded.append(
                 UploadedDocument(
                     document=DocumentOut.model_validate(result.document),
@@ -38,6 +39,12 @@ async def upload_documents(
                 duplicate_count += 1
             else:
                 uploaded_count += 1
+                if content is not None:
+                    background_tasks.add_task(
+                        ingest_document_in_background,
+                        result.document.id,
+                        content,
+                    )
     except AppError as exc:
         raise bad_request(str(exc)) from exc
 

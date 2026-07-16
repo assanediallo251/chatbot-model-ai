@@ -1,0 +1,102 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <title>Institut Superieur d'Informatique - Document de Demonstration</title>
+  <style>
+    body {
+      color: #111827;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Arial, sans-serif;
+      line-height: 1.55;
+      margin: 42px auto;
+      max-width: 820px;
+    }
+
+    h1 {
+      border-bottom: 2px solid #0f172a;
+      color: #0f172a;
+      font-size: 28px;
+      margin-bottom: 18px;
+      padding-bottom: 12px;
+    }
+
+    h2 {
+      color: #1f2937;
+      font-size: 19px;
+      margin-top: 28px;
+    }
+
+    p,
+    li {
+      font-size: 14px;
+    }
+
+    .note {
+      background: #f8fafc;
+      border: 1px solid #e5e7eb;
+      border-radius: 8px;
+      color: #475569;
+      padding: 12px 14px;
+    }
+  </style>
+</head>
+<body>
+  <h1>Institut Superieur d'Informatique - Document de Demonstration</h1>
+
+  <p class="note">Ce document est un support de demonstration genere pour tester le chatbot IA du projet Master 1 GL. Il presente l'Institut Superieur d'Informatique, appele ISI, de maniere simple et structuree. Il ne remplace pas les documents officiels de l'etablissement.</p>
+
+  <h2>1. Presentation generale</h2>
+  <p>L'Institut Superieur d'Informatique est un etablissement d'enseignement superieur oriente vers les metiers du numerique, du developpement logiciel, des systemes d'information et de l'innovation technologique.</p>
+  <p>ISI accompagne les etudiants dans l'acquisition de competences techniques, methodologiques et professionnelles. L'objectif est de former des profils capables de comprendre les besoins d'une organisation, de concevoir des solutions informatiques et de participer a des projets reels.</p>
+
+  <h2>2. Mission de l'etablissement</h2>
+  <p>La mission principale de l'ISI est de proposer une formation de qualite dans le domaine de l'informatique. L'institut cherche a rapprocher les enseignements academiques des exigences du monde professionnel.</p>
+  <p>Les formations mettent l'accent sur la pratique, la rigueur, le travail en equipe, la resolution de problemes et l'adaptation aux technologies modernes.</p>
+
+  <h2>3. Domaines de formation</h2>
+  <p>Les enseignements de l'ISI couvrent plusieurs domaines lies a l'informatique:</p>
+  <ul>
+    <li>genie logiciel;</li>
+    <li>developpement web et mobile;</li>
+    <li>bases de donnees;</li>
+    <li>reseaux informatiques;</li>
+    <li>systemes d'exploitation;</li>
+    <li>cybersecurite;</li>
+    <li>intelligence artificielle;</li>
+    <li>cloud computing;</li>
+    <li>gestion de projet informatique;</li>
+    <li>analyse et conception des systemes d'information.</li>
+  </ul>
+
+  <h2>4. Approche pedagogique</h2>
+  <p>L'approche pedagogique de l'ISI repose sur l'apprentissage par la pratique. Les etudiants travaillent sur des exercices, des travaux diriges, des mini-projets et des projets de fin de module.</p>
+  <p>Les projets occupent une place importante dans la formation. Ils permettent aux etudiants d'appliquer les notions vues en cours, de collaborer, de documenter leur travail et de presenter leurs resultats.</p>
+
+  <h2>5. Competences visees</h2>
+  <p>A la fin de leur parcours, les etudiants doivent etre capables d'analyser un besoin fonctionnel, de concevoir une architecture logicielle, de developper une application web ou mobile, de modeliser une base de donnees, d'utiliser Git, de travailler avec des API, de deployer une application, de rediger une documentation technique et de collaborer dans une equipe projet.</p>
+
+  <h2>6. Exemple de projet pedagogique</h2>
+  <p>Un exemple de projet realise dans le cadre des enseignements est le chatbot IA pour l'Institut Superieur d'Informatique.</p>
+  <p>Ce projet consiste a developper un assistant intelligent capable de repondre aux questions sur ISI a partir de documents PDF. Le systeme doit extraire le texte des documents, le decouper en segments, generer des embeddings, stocker les vecteurs dans PostgreSQL avec PgVector, puis utiliser un modele LLM pour formuler une reponse contextualisee.</p>
+  <p>Le projet permet aux etudiants de comprendre les principes du RAG, c'est-a-dire Retrieval Augmented Generation. Cette approche combine la recherche d'information dans des documents et la generation de reponses par un modele de langage.</p>
+
+  <h2>7. Outils et technologies etudies</h2>
+  <p>Les etudiants de l'ISI peuvent etre amenes a utiliser Python, FastAPI, PostgreSQL, PgVector, Docker, Git, GitHub, Streamlit, des bibliotheques de traitement PDF, des modeles d'embeddings et des API de modeles de langage comme GroqCloud.</p>
+
+  <h2>8. Vie etudiante et accompagnement</h2>
+  <p>L'ISI encourage les etudiants a participer activement aux cours, aux projets et aux activites de groupe. L'accompagnement pedagogique vise a aider les apprenants a progresser techniquement et professionnellement.</p>
+  <p>Les etudiants sont invites a developper leur autonomie, leur discipline, leur curiosite et leur capacite a apprendre de nouvelles technologies.</p>
+
+  <h2>9. Relations avec le monde professionnel</h2>
+  <p>L'informatique etant un domaine tres lie aux besoins des entreprises, les projets, les stages et les presentations jouent un role important dans la preparation professionnelle des etudiants.</p>
+  <p>Les competences attendues ne se limitent pas au code. Elles incluent aussi la comprehension du besoin client, la qualite logicielle, la documentation, les tests, la securite et la maintenance des applications.</p>
+
+  <h2>10. Objectif du chatbot ISI</h2>
+  <p>Le chatbot ISI a pour objectif de faciliter l'acces aux informations concernant l'institut. Il peut aider les nouveaux etudiants, les visiteurs ou les collaborateurs a trouver rapidement des reponses sur les formations, les projets, les technologies et l'organisation pedagogique.</p>
+  <p>Dans une premiere version, le chatbot se base uniquement sur les documents fournis par l'utilisateur. Si une information n'existe pas dans les documents indexees, le chatbot doit indiquer qu'il ne peut pas repondre avec certitude.</p>
+
+  <h2>11. Conclusion</h2>
+  <p>L'Institut Superieur d'Informatique forme des etudiants aux competences numeriques essentielles. A travers les cours, les projets et les outils modernes, ISI prepare les apprenants a participer a des projets informatiques concrets et a evoluer dans un environnement professionnel exigeant.</p>
+  <p>Le projet de chatbot IA constitue une application pratique des notions d'intelligence artificielle generative, de recherche semantique, de bases de donnees vectorielles et de developpement d'API.</p>
+</body>
+</html>

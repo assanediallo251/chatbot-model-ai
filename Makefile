@@ -1,25 +1,25 @@
 .PHONY: install lint format test run-api run-ui migrate compose-up compose-down
 
 install:
-	python -m pip install -e ".[dev]"
+	python3 -m pip install -e ".[dev]"
 
 lint:
-	ruff check .
+	python3 -m ruff check .
 
 format:
-	ruff format .
+	python3 -m ruff format .
 
 test:
-	pytest
+	python3 -m pytest
 
 migrate:
-	alembic upgrade head
+	python3 -m alembic upgrade head
 
 run-api:
-	uvicorn app.main:app --reload --host 127.0.0.1 --port 8000
+	python3 -m uvicorn app.main:app --reload --reload-dir app --host 127.0.0.1 --port 8000
 
 run-ui:
-	streamlit run streamlit_app/main.py
+	python3 -m streamlit run streamlit_app/main.py
 
 compose-up:
 	docker compose up --build

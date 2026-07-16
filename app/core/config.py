@@ -25,8 +25,11 @@ class Settings(BaseSettings):
     groq_temperature: float = 0.1
     groq_max_tokens: int = 700
 
+    embedding_provider: Literal["hashing", "sentence_transformers"] = "hashing"
     embedding_model: str = "sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2"
     embedding_dimensions: int = 384
+    embedding_batch_size: int = 32
+    embedding_preload_on_startup: bool = False
 
     chunk_size: int = Field(default=800, ge=200)
     chunk_overlap: int = Field(default=120, ge=0)

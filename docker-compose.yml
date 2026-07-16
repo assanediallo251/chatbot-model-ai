@@ -22,8 +22,11 @@ services:
       DATABASE_URL: postgresql+asyncpg://postgres:postgres@postgres:5432/chatbot_isi
       GROQ_API_KEY: ${GROQ_API_KEY}
       GROQ_MODEL: ${GROQ_MODEL:-openai/gpt-oss-20b}
+      EMBEDDING_PROVIDER: ${EMBEDDING_PROVIDER:-hashing}
       EMBEDDING_MODEL: ${EMBEDDING_MODEL:-sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2}
       EMBEDDING_DIMENSIONS: ${EMBEDDING_DIMENSIONS:-384}
+      EMBEDDING_BATCH_SIZE: ${EMBEDDING_BATCH_SIZE:-32}
+      EMBEDDING_PRELOAD_ON_STARTUP: ${EMBEDDING_PRELOAD_ON_STARTUP:-false}
       CHUNK_SIZE: ${CHUNK_SIZE:-800}
       CHUNK_OVERLAP: ${CHUNK_OVERLAP:-120}
       RETRIEVAL_TOP_K: ${RETRIEVAL_TOP_K:-5}

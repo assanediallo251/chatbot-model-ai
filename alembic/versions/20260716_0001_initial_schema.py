@@ -9,8 +9,9 @@ from collections.abc import Sequence
 
 import pgvector.sqlalchemy
 import sqlalchemy as sa
-from alembic import op
 from sqlalchemy.dialects import postgresql
+
+from alembic import op
 
 revision: str = "20260716_0001"
 down_revision: str | None = None
@@ -30,8 +31,18 @@ def upgrade() -> None:
         sa.Column("status", sa.String(length=32), nullable=False),
         sa.Column("error_message", sa.Text(), nullable=True),
         sa.Column("chunk_count", sa.Integer(), nullable=False),
-        sa.Column("created_at", sa.DateTime(timezone=True), server_default=sa.func.now(), nullable=False),
-        sa.Column("updated_at", sa.DateTime(timezone=True), server_default=sa.func.now(), nullable=False),
+        sa.Column(
+            "created_at",
+            sa.DateTime(timezone=True),
+            server_default=sa.func.now(),
+            nullable=False,
+        ),
+        sa.Column(
+            "updated_at",
+            sa.DateTime(timezone=True),
+            server_default=sa.func.now(),
+            nullable=False,
+        ),
         sa.PrimaryKeyConstraint("id"),
         sa.UniqueConstraint("file_hash"),
     )
@@ -48,7 +59,12 @@ def upgrade() -> None:
         sa.Column("token_count", sa.Integer(), nullable=False),
         sa.Column("chunk_metadata", postgresql.JSONB(astext_type=sa.Text()), nullable=False),
         sa.Column("embedding", pgvector.sqlalchemy.Vector(dim=384), nullable=False),
-        sa.Column("created_at", sa.DateTime(timezone=True), server_default=sa.func.now(), nullable=False),
+        sa.Column(
+            "created_at",
+            sa.DateTime(timezone=True),
+            server_default=sa.func.now(),
+            nullable=False,
+        ),
         sa.ForeignKeyConstraint(["document_id"], ["documents.id"], ondelete="CASCADE"),
         sa.PrimaryKeyConstraint("id"),
     )
@@ -64,7 +80,12 @@ def upgrade() -> None:
         sa.Column("question", sa.Text(), nullable=False),
         sa.Column("answer", sa.Text(), nullable=False),
         sa.Column("sources", postgresql.JSONB(astext_type=sa.Text()), nullable=False),
-        sa.Column("created_at", sa.DateTime(timezone=True), server_default=sa.func.now(), nullable=False),
+        sa.Column(
+            "created_at",
+            sa.DateTime(timezone=True),
+            server_default=sa.func.now(),
+            nullable=False,
+        ),
         sa.PrimaryKeyConstraint("id"),
     )
 

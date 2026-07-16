@@ -1,6 +1,9 @@
 import hashlib
+import logging
+import uuid
 from dataclasses import dataclass
 
+import anyio
 from fastapi import UploadFile
 from sqlalchemy.ext.asyncio import AsyncSession
 
@@ -8,9 +11,12 @@ from app.core.config import settings
 from app.core.exceptions import InvalidUploadError
 from app.db.models import Document, DocumentChunk, DocumentStatus
 from app.db.repositories import ChunkRepository, DocumentRepository
+from app.db.session import AsyncSessionLocal
 from app.services.embedding_service import EmbeddingService
 from app.services.pdf_extractor import PDFExtractor
 from app.services.text_chunker import TextChunker
+
+logger = logging.getLogger(__name__)
 
 
 @dataclass(frozen=True)
@@ -35,6 +41,13 @@ class DocumentIngestionService:
         self.embedding_service = embedding_service or EmbeddingService()
 
     async def ingest_upload(self, upload: UploadFile) -> IngestionResult:
+        result, content = await self.register_upload(upload)
+        if result.duplicated or content is None:
+            return result
+        document = await self.process_document(result.document.id, content)
+        return IngestionResult(document=document, duplicated=False)
+
+    async def register_upload(self, upload: UploadFile) -> tuple[IngestionResult, bytes | None]:
         self._validate_upload(upload)
         content = await upload.read()
         self._validate_size(content)
@@ -53,10 +66,16 @@ class DocumentIngestionService:
         self.session.add(document)
         await self.session.commit()
         await self.session.refresh(document)
+        return IngestionResult(document=document, duplicated=False), content
+
+    async def process_document(self, document_id: uuid.UUID, content: bytes) -> Document:
+        document = await self.document_repository.get(document_id)
+        if not document:
+            raise InvalidUploadError("Document introuvable pour l'indexation.")
 
         try:
-            pages = self.extractor.extract_pages(content)
-            chunks = self.chunker.chunk_pages(pages)
+            pages = await anyio.to_thread.run_sync(self.extractor.extract_pages, content)
+            chunks = await anyio.to_thread.run_sync(self.chunker.chunk_pages, pages)
             if not chunks:
                 raise InvalidUploadError("Le PDF ne contient aucun segment indexable.")
 
@@ -81,7 +100,7 @@ class DocumentIngestionService:
             document.error_message = None
             await self.session.commit()
             await self.session.refresh(document)
-            return IngestionResult(document=document, duplicated=False)
+            return document
         except Exception as exc:
             await self.session.rollback()
             stored_document = await self.document_repository.get(document.id)
@@ -108,3 +127,12 @@ class DocumentIngestionService:
             raise InvalidUploadError(
                 f"Le fichier depasse la taille maximale de {settings.max_upload_mb} Mo."
             )
+
+
+async def ingest_document_in_background(document_id: uuid.UUID, content: bytes) -> None:
+    async with AsyncSessionLocal() as session:
+        service = DocumentIngestionService(session)
+        try:
+            await service.process_document(document_id, content)
+        except Exception:
+            logger.exception("Background ingestion failed for document %s", document_id)

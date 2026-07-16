@@ -13,14 +13,14 @@ dependencies = [
     "anyio>=4.0.0",
     "asyncpg>=0.29.0",
     "fastapi>=0.115.0",
+    "greenlet>=3.0.0",
     "groq>=0.11.0",
     "httpx>=0.27.0",
     "pgvector>=0.3.0",
     "pydantic-settings>=2.4.0",
     "pypdf>=4.3.0",
     "python-multipart>=0.0.9",
-    "sentence-transformers>=3.0.0",
-    "sqlalchemy>=2.0.30",
+    "sqlalchemy[asyncio]>=2.0.30",
     "streamlit>=1.37.0",
     "tenacity>=8.3.0",
     "uvicorn[standard]>=0.30.0",
@@ -31,6 +31,10 @@ dev = [
     "pytest>=8.2.0",
     "pytest-asyncio>=0.23.0",
     "ruff>=0.5.0",
+]
+
+ml = [
+    "sentence-transformers>=3.0.0",
 ]
 
 [tool.setuptools.packages.find]
@@ -46,6 +50,7 @@ target-version = "py311"
 
 [tool.ruff.lint]
 select = ["E", "F", "I", "B", "UP"]
+ignore = ["B008"]
 
 [tool.ruff.format]
 quote-style = "double"
