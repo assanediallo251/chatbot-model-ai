@@ -54,7 +54,7 @@ class Settings(BaseSettings):
     external_search_total_timeout_seconds: float = Field(default=12.0, ge=2.0, le=60.0)
     external_search_max_pages: int = Field(default=5, ge=1, le=30)
     external_search_max_sources: int = Field(default=4, ge=1, le=10)
-    external_search_min_score: float = Field(default=0.12, ge=0.0, le=1.0)
+    external_search_min_score: float = Field(default=0.35, ge=0.0, le=1.0)
     external_search_trigger_keywords: str = (
         "tarif,"
         "tarifs,"
@@ -75,6 +75,19 @@ class Settings(BaseSettings):
         "president,"
         "président,"
         "pdg,"
+        "diplome,"
+        "diplôme,"
+        "diplomes,"
+        "diplômes,"
+        "reconnu,"
+        "reconnus,"
+        "reconnaissance,"
+        "accreditation,"
+        "accréditation,"
+        "cames,"
+        "anaq,"
+        "anaq-sup,"
+        "anaqsup,"
         "histoire,"
         "historique,"
         "presentation,"

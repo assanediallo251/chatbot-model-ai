@@ -18,6 +18,8 @@ La page officielle de presentation indique que l'ISI contribue depuis plus de 27
 
 Au fil des annees, l'ISI s'est developpe avec plusieurs campus, une communaute etudiante composee de plus de trente nationalites, et une offre de formation diversifiee. Le Groupe ISI delivre des diplomes de Licence et Master reconnus par le monde de l'entreprise et par les instances d'accreditation nationales et panafricaines, notamment l'ANAQ-Sup et le CAMES.
 
+Pour les questions sur la reconnaissance des diplomes, la reference officielle est la page Presentation du Groupe ISI: elle indique que les diplomes de Licence et Master sont reconnus par le monde de l'entreprise, par l'ANAQ-Sup et par le CAMES. Elle precise aussi que l'ISI est sous la tutelle du Ministere de l'Enseignement Superieur prive et que les diplomes delivres sont controles par l'ANAQ-Sup.
+
 La presentation officielle mentionne plusieurs reconnaissances:
 
 - 2015: meilleure academie d'excellence CISCO au niveau de l'Afrique sub-saharienne;

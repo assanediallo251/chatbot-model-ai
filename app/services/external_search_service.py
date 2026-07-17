@@ -270,6 +270,37 @@ def _static_official_results(question: str) -> list[ExternalSearchResult]:
             )
         )
 
+    accreditation_terms = {
+        "diplome",
+        "diplomes",
+        "reconnu",
+        "reconnus",
+        "reconnaissance",
+        "accreditation",
+        "cames",
+        "anaq",
+        "anaq-sup",
+        "anaqsup",
+    }
+    if any(term in normalized_question for term in accreditation_terms):
+        content = (
+            "Page officielle Presentation du Groupe ISI. Le site indique que le "
+            "Groupe ISI delivre des diplomes de Licence et Master reconnus a la fois "
+            "par le monde de l'entreprise et par les instances d'accreditation "
+            "nationales ANAQ-Sup et panafricaines CAMES. La meme page precise que "
+            "l'ISI est sous la tutelle du Ministere de l'Enseignement Superieur prive "
+            "et que les diplomes delivres sont controles par l'ANAQ-Sup."
+        )
+        results.append(
+            ExternalSearchResult(
+                title="Presentation - Groupe ISI",
+                url="https://www.groupeisi.com/?page_id=47335",
+                content=content,
+                excerpt=content,
+                score=1.0,
+            )
+        )
+
     billing_terms = {"tarif", "prix", "cout", "frais", "scolarite", "mensualite", "paiement"}
     if any(term in normalized_question for term in billing_terms):
         content = (

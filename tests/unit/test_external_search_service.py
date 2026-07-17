@@ -1,5 +1,6 @@
 from app.services.external_search_service import (
     ExternalSearchResult,
+    ExternalSearchService,
     _score_page,
     _static_official_results,
     external_result_to_source,
@@ -60,3 +61,25 @@ def test_static_official_results_cover_history_questions() -> None:
     assert results[0].title == "Presentation - Groupe ISI"
     assert "31 annees d'expertise" in results[0].content
     assert "plus de 27 ans" in results[0].content
+
+
+def test_static_official_results_cover_accreditation_questions() -> None:
+    results = _static_official_results(
+        "est-ce que ces diplomes sont reconnus par cames et anaqsup ?"
+    )
+
+    assert len(results) == 1
+    assert results[0].title == "Presentation - Groupe ISI"
+    assert results[0].score == 1.0
+    assert "ANAQ-Sup" in results[0].content
+    assert "CAMES" in results[0].content
+
+
+def test_should_search_for_accreditation_even_with_document_sources() -> None:
+    service = ExternalSearchService()
+
+    assert service.should_search(
+        "est-ce que ces diplomes sont reconnus par cames et anaqsup ?",
+        has_document_sources=True,
+        top_score=0.9,
+    )
