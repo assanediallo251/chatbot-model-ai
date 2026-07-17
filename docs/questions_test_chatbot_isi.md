@@ -50,4 +50,4 @@ Ces questions peuvent etre posees apres avoir indexe le PDF de demonstration dan
 29. Quel est le montant des frais d'inscription ?
 30. Qui est le directeur actuel de l'ISI ?
 
-Pour ces trois dernieres questions, le chatbot devrait repondre que l'information n'est pas disponible dans le document fourni.
+Pour les questions administratives, le chatbot peut maintenant completer avec les sources web ISI autorisees. Pour les tarifs ou frais d'inscription, il ne doit pas inventer de montant: il doit indiquer que les montants exacts ne sont pas publies dans les sources disponibles et orienter vers la comptabilite du Groupe ISI.

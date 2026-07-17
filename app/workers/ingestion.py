@@ -13,6 +13,7 @@ from app.db.models import Document, DocumentChunk, DocumentStatus
 from app.db.repositories import ChunkRepository, DocumentRepository
 from app.db.session import AsyncSessionLocal
 from app.services.embedding_service import EmbeddingService
+from app.services.isi_scope import is_isi_corpus_text
 from app.services.pdf_extractor import PDFExtractor
 from app.services.text_chunker import TextChunker
 
@@ -78,6 +79,14 @@ class DocumentIngestionService:
             chunks = await anyio.to_thread.run_sync(self.chunker.chunk_pages, pages)
             if not chunks:
                 raise InvalidUploadError("Le PDF ne contient aucun segment indexable.")
+            if settings.isi_corpus_filter_enabled and not self._is_isi_document(
+                document.filename,
+                chunks,
+            ):
+                raise InvalidUploadError(
+                    "Ce PDF ne semble pas concerner l'Institut Superieur "
+                    "d'Informatique (ISI) ou le site officiel groupeisi.com."
+                )
 
             embeddings = await self.embedding_service.embed_texts(
                 [chunk.content for chunk in chunks]
@@ -127,6 +136,10 @@ class DocumentIngestionService:
             raise InvalidUploadError(
                 f"Le fichier depasse la taille maximale de {settings.max_upload_mb} Mo."
             )
+
+    @staticmethod
+    def _is_isi_document(filename: str, chunks: list) -> bool:
+        return any(is_isi_corpus_text(filename, chunk.content) for chunk in chunks)
 
 
 async def ingest_document_in_background(document_id: uuid.UUID, content: bytes) -> None:

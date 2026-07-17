@@ -112,3 +112,6 @@ python3 -m scripts.preload_models
 - Le modele Groq par defaut est `openai/gpt-oss-20b`.
 - Streamlit consomme uniquement l'API FastAPI.
 - Les PDF ne sont pas stockes bruts en V1; seuls les chunks, metadonnees et embeddings sont conserves.
+- Le corpus est filtre sur l'Institut Superieur d'Informatique (ISI) et le site officiel `https://www.groupeisi.com/`.
+- Si les PDF ne suffisent pas, le chatbot peut completer avec les pages web ISI autorisees, notamment `groupeisi.com` et la page comptabilite/paiement.
+- Les erreurs temporaires GroqCloud, dont le rate limiting, sont retentees automatiquement puis renvoyees clairement a l'interface.

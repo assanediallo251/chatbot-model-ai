@@ -4,8 +4,10 @@ from uuid import UUID
 from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
 
+from app.core.config import settings
 from app.db.models import Document, DocumentChunk, DocumentStatus
 from app.schemas.chat import SourceChunk
+from app.services.isi_scope import isi_corpus_sql_filter
 
 
 @dataclass(frozen=True)
@@ -23,15 +25,22 @@ class VectorSearchService:
     def __init__(self, session: AsyncSession) -> None:
         self.session = session
 
-    async def search(self, embedding: list[float], top_k: int) -> list[RetrievedChunk]:
+    async def search(
+        self,
+        embedding: list[float],
+        top_k: int,
+        only_isi: bool = True,
+    ) -> list[RetrievedChunk]:
         distance = DocumentChunk.embedding.cosine_distance(embedding).label("distance")
         statement = (
             select(DocumentChunk, Document, distance)
             .join(Document, Document.id == DocumentChunk.document_id)
             .where(Document.status == DocumentStatus.INDEXED.value)
-            .order_by(distance)
-            .limit(top_k)
         )
+        if only_isi and settings.isi_corpus_filter_enabled:
+            statement = statement.where(isi_corpus_sql_filter())
+
+        statement = statement.order_by(distance).limit(top_k)
         rows = (await self.session.execute(statement)).all()
         return [
             RetrievedChunk(chunk=chunk, document=document, distance=float(distance_value))

@@ -17,8 +17,20 @@ class LLMConfigurationError(AppError):
     pass
 
 
+class LLMRateLimitError(AppError):
+    pass
+
+
+class LLMTransientError(AppError):
+    pass
+
+
 def bad_request(message: str) -> HTTPException:
     return HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail=message)
+
+
+def too_many_requests(message: str) -> HTTPException:
+    return HTTPException(status_code=status.HTTP_429_TOO_MANY_REQUESTS, detail=message)
 
 
 def service_unavailable(message: str) -> HTTPException:

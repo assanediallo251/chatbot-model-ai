@@ -22,4 +22,6 @@ def test_build_user_prompt_contains_question_context_and_sources() -> None:
     assert "Quel est l'objectif ?" in prompt
     assert "Le projet met en place un chatbot intelligent." in prompt
     assert "isi.pdf p.2" in prompt
+    assert "https://www.groupeisi.com/" in prompt
+    assert "Institut Superieur d'Informatique (ISI) uniquement" in prompt
     assert "Ne fabrique aucune information" in prompt
